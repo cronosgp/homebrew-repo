@@ -1,10 +1,16 @@
-class SubversionAT197 < Formula
+class Subversion < Formula
   desc "Version control system designed to be a better CVS"
   homepage "https://subversion.apache.org/"
   url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.7.tar.bz2"
   mirror "https://archive.apache.org/dist/subversion/subversion-1.9.7.tar.bz2"
   sha256 "c3b118333ce12e501d509e66bb0a47bcc34d053990acab45559431ac3e491623"
   revision 3
+
+  bottle do
+    sha256 "7482d281e4e0ff5b10377a576f3e97ed867795645291308d35adf51747ff2162" => :high_sierra
+    sha256 "a181531a3a3ad04d429b7aead29fec814c6e042482ea35abc581cc9e4571a25a" => :sierra
+    sha256 "6cb9acb883f5d7045324846bab0d51315da6fbb462b9ef664e0c9d0c9b58ef8d" => :el_capitan
+  end
 
   deprecated_option "java" => "with-java"
   deprecated_option "perl" => "with-perl"
@@ -30,7 +36,6 @@ class SubversionAT197 < Formula
 
   # Other optional dependencies
   depends_on "gpg-agent" => :optional
-  depends_on "gettext" => :optional
   depends_on :java => :optional
 
   resource "serf" do
@@ -92,13 +97,13 @@ class SubversionAT197 < Formula
       --with-apxs=no
       --with-serf=#{serf_prefix}
       --disable-mod-activation
+      --disable-nls
       --without-apache-libexecdir
       --without-berkeley-db
     ]
 
     args << "--enable-javahl" << "--without-jikes" if build.with? "java"
     args << "--without-gpg-agent" if build.without? "gpg-agent"
-    args << "--disable-nls" if build.without? "gettext"
 
     if build.with? "ruby"
       args << "--with-ruby-sitedir=#{lib}/ruby"
